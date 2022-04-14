@@ -33,8 +33,7 @@ namespace RLCLab
                 //определить сумму для каждой строки
                 bonus = each.GetBonus();
                 discount = each.GetDiscount();
-                usedBonus = each.GetUsedBonus(_customer);
-
+                usedBonus = each.GetUsedBonus(_customer,each);
                 // учитываем скидку
                 thisAmount = each.GetSum() - discount - usedBonus;
                 //показать результаты
@@ -59,10 +58,7 @@ namespace RLCLab
             //добавить нижний колонтитул
             return "Сумма счета составляет " + totalAmount.ToString() + 
                 "\n" + "Вы заработали " + totalBonus.ToString() + " бонусных балов";
-        }
-
-
-       
+        }     
 
     }
 }

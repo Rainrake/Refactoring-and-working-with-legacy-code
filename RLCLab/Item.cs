@@ -28,6 +28,18 @@ namespace RLCLab
         {
             return _Goods;
         }
+        public int GetBonus()
+        {
+            return (int)(GetSum() * getGoods().GetBonus());
+        }
+        public double GetDiscount(Item item)
+        {
+            return (GetSum() * getGoods().GetDiscount(item._quantity,item._price)); 
+        }
+        public double GetDiscount()
+        {
+            return _Goods.GetDiscount(getQuantity(),getPrice());
+        }
         public string getItemString(double discount, double thisAmount, int bonus)
         {
             return "\t" + getGoods().getTitle() + "\t" +
@@ -37,44 +49,11 @@ namespace RLCLab
             "\t" + discount.ToString() + "\t" + thisAmount.ToString() +
             "\t" + bonus.ToString() + "\n";
         }
-        public int GetBonus()
-        {
-            switch (getGoods().getPriceCode())
-            {
-                case Goods.REGULAR:
-                    return (int)(getQuantity() * getPrice() * 0.05);
-                case Goods.SALE:                     
-                    return (int)(getQuantity() * getPrice() * 0.01);
-            }
-            return 0;
-        }
         public double GetSum() 
         {
             return getQuantity() * getPrice();
         }
-        public double GetDiscount()
-        {
-            switch (getGoods().getPriceCode())
-            {
-                case Goods.REGULAR:
-                    if (getQuantity() > 2)
-                        return
-                        (getQuantity() * getPrice()) * 0.03; // 3%                
-                    break;
-                case Goods.SPECIAL_OFFER:
-                    if (getQuantity() > 10)
-                        return
-                        (getQuantity() * getPrice()) * 0.005; // 0.5%
-                    break;
-                case Goods.SALE:
-                    if (getQuantity() > 3)
-                        return
-                        (getQuantity() * getPrice()) * 0.01; // 0.1%  
-                    break;
-            }
-            return 0;
-        }
-        public double GetUsedBonus(Customer _customer) 
+        public double GetUsedBonus(Customer _customer, Item item) 
         {
             double usedBonus = 0;
             // используем бонусы
