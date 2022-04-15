@@ -57,9 +57,9 @@ namespace RLCLab
         {
             double usedBonus = 0;
             // используем бонусы
-            if ((getGoods().getPriceCode() == Goods.REGULAR) && getQuantity() > 5)
+            if ((getGoods().GetType() == typeof(REG)) && getQuantity() > 5)
                 usedBonus = _customer.useBonus((int)(GetSum() - GetDiscount()));
-            if ((getGoods().getPriceCode() == Goods.SPECIAL_OFFER) && getQuantity() > 1)
+            if ((getGoods().GetType() == typeof(SPO)) && getQuantity() > 1)
                 usedBonus = _customer.useBonus((int)(GetSum() - GetDiscount()));
             return usedBonus;
         }
