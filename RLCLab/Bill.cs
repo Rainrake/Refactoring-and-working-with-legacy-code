@@ -8,21 +8,27 @@ namespace RLCLab
     {
         private List<Item> _items;
         private Customer _customer;
-        public Bill(Customer customer)
+        private IView _view;
+        public Bill(Customer customer, IView view)
         {
             this._customer = customer;
             this._items = new List<Item>();
+            this._view = view;
         }
         public void addGoods(Item arg)
         {
             _items.Add(arg);
         }
-        public String statement()
+        public void SetView(IView view)
+        {
+            _view = view;
+        }
+        public String GenerateBill()
         {
             double totalAmount = 0;
             int totalBonus = 0;
             List<Item>.Enumerator items = _items.GetEnumerator();
-            String result = getHeader();
+            String result = _view.GetHeader(_customer);
             while (items.MoveNext())
             {
                 double thisAmount, usedBonus;
@@ -33,32 +39,18 @@ namespace RLCLab
                 //определить сумму для каждой строки
                 bonus = each.GetBonus();
                 discount = each.GetDiscount();
-                usedBonus = each.GetUsedBonus(_customer,each);
+                usedBonus = each.GetUsedBonus(_customer, each);
                 // учитываем скидку
                 thisAmount = each.GetSum() - discount - usedBonus;
                 //показать результаты
-                result += each.getItemString(discount, thisAmount, bonus);
+                result += _view.GetItemString(each, discount, thisAmount, bonus);
                 totalAmount += thisAmount;
                 totalBonus += bonus;
             }
-            result += getFoooter(totalAmount, totalBonus);
+            result += _view.GetFooter(totalAmount, totalBonus);
             //Запомнить бонус клиента
             _customer.receiveBonus(totalBonus);
             return result;
-        }
-        string getHeader()
-        {
-            return "Счет для " + _customer.getName() + "\n" +
-            "\t" + "Название" + "\t" + "Цена" +
-            "\t" + "Кол-во" + "Стоимость" + "\t" + "Скидка" +
-            "\t" + "Сумма" + "\t" + "Бонус" + "\n";
-        }
-        string getFoooter(double totalAmount, int totalBonus) 
-        {
-            //добавить нижний колонтитул
-            return "Сумма счета составляет " + totalAmount.ToString() + 
-                "\n" + "Вы заработали " + totalBonus.ToString() + " бонусных балов";
-        }     
-
+        }   
     }
 }

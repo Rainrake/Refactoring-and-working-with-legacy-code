@@ -40,15 +40,6 @@ namespace RLCLab
         {
             return _Goods.GetDiscount(getQuantity(),getPrice());
         }
-        public string getItemString(double discount, double thisAmount, int bonus)
-        {
-            return "\t" + getGoods().getTitle() + "\t" +
-
-            "\t" + getPrice() + "\t" + getQuantity() +
-            "\t" + (getQuantity() * getPrice()).ToString() +
-            "\t" + discount.ToString() + "\t" + thisAmount.ToString() +
-            "\t" + bonus.ToString() + "\n";
-        }
         public double GetSum() 
         {
             return getQuantity() * getPrice();

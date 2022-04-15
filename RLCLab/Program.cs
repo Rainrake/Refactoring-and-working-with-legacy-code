@@ -23,7 +23,8 @@ namespace RLCLab
             result = line.Split(':');
             int bonus = Convert.ToInt32(result[1].Trim());
             Customer customer = new Customer(name, bonus);
-            Bill b = new Bill(customer);
+            IView view = new TxtView();
+            Bill b = new Bill(customer,view);
             // read goods count
             line = sr.ReadLine();
             result = line.Split(':');
@@ -74,7 +75,7 @@ namespace RLCLab
                 int qty = Convert.ToInt32(result[2].Trim());
                 b.addGoods(new Item(g[gid - 1], qty, price));
             }
-            string bill = b.statement();
+            string bill = b.GenerateBill();
             Console.WriteLine(bill);
         }
     }
